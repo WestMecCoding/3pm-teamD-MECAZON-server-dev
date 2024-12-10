@@ -54,7 +54,7 @@ app.get("/api/employees", (req, res) => {
 
 
 //find users endpoint
-app.get("/find/:database/:collection", async (req, res) => {
+app.get("/all-users/:database/:collection", async (req, res) => {
   try {
     const { database, collection } = req.params;
     const db = client.db(database);
@@ -65,6 +65,39 @@ app.get("/find/:database/:collection", async (req, res) => {
   }
 });
 
+
+app.post("/add-user/:database/:collection", async (req, res) => {
+  try {
+    const { document } = req.body;
+    const { database, collection } = req.params;
+    const db = client.db(database);
+    const allDocuments = await db.collection(collection).find({}).toArray();
+    // allDocuments.forEach(())
+    const result = await db.collection(collection).insertOne(document);
+    res.status(201).send(`Document inserted with ID: ${result.insertedId}`);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+app.delete("/delete-user/:database/:collection/:id", async (req, res) => {
+  try {
+    const { database, collection, id } = req.params;
+    const db = client.db(database);
+    const result = await db
+      .collection(collection)
+      .deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 1) {
+      res.status(200).send(`Document with ID ${id} deleted successfully.`);
+    } else {
+      res.status(404).send(`Document with ID ${id} not found.`);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 // Start the server
