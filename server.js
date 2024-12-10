@@ -27,3 +27,35 @@ app.get("/api/employees", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+app.get("/find/:database/:employees", async (req, res) => {
+
+});
+
+app.get("/find/:database/:users", async (req, res) => {
+
+});
+////
+app.post("/user/create-user", async (req, res) => {
+
+})
+app.put("/user/update-user/:email(or id)/", async (req, res) => {
+
+});
+
+app.delete("/user/delete-user/:email(or id)/", async (req, res) => {
+
+});
+////
+app.post("/user/create-employee/:email(or id)", async (req, res) => {
+
+})
+app.put("/user/update-employee/:email(or id)/", async (req, res) => {
+
+});
+
+app.delete("/user/delete-employee/:email(or id)/", async (req, res) => {
+
+});
+
