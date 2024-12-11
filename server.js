@@ -27,3 +27,39 @@ app.get("/api/employees", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Employees
+app.get('/company-home/employees', (req, res) => {
+  try {
+    const employees = require("./db/employees.json");
+    res.json(employees);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send(error.message);
+  }
+})
+// Login
+app.get('/company-home/login', (req, res) => {
+  try {
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send(error.message);
+  }
+})
+// Users
+app.get('/company-home/users', (req, res) => {
+  try {
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send(error.message);
+  }
+})
+// Update Employee
+
+// Delete Employee
+
+// Update User
+
+// Delete User
