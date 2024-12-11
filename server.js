@@ -9,6 +9,13 @@ if (fs.existsSync('.env')) {
   require('dotenv').config();
 }
 
+// Initialize both database connections
+const serverDB = await connectServerDB();
+const clientDB = await connectClientDB();
+// Create your models using the appropriate connection
+const Users = serverDB.model('User', userSchema);
+const Products = clientDB.model('Product', productSchema);
+
 const uri = process.env.MONGO_URI;
 
 const client = new MongoClient(uri);
