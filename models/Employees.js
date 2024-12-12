@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema({
             required: [true, 'First name is required'],
             trim: true
         },
-        last_last: {
+        last_name: {
             type: String,
             required: [true, 'Last name is required'],
             trim: true
@@ -27,12 +27,16 @@ const employeeSchema = new mongoose.Schema({
     },
     employment_type: {
         type: String,
-        required: [true, 'schudule is required'],
+        required: [true, 'Schedule is required'],
         enum: ['part-time', 'full-time']
     },
     date_hired: {
         type: Date,
         required: [true, 'Date hired is required']
+    },
+    isAdmin: {
+    type: Boolean,
+    required: [true, 'Adminstrator is required']
     },
     contact_info: {
         email: {
