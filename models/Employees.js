@@ -2,20 +2,58 @@
 
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
     name: {
+        first_name: {
+            type: String,
+            required: [true, 'First name is required'],
+            trim: true
+        },
+        last_last: {
+            type: String,
+            required: [true, 'Last name is required'],
+            trim: true
+        },
+    },
+    employee_id: {
         type: String,
-        required: [true, 'Product name is required'],
-        trim: true
+        required: [true, 'Employee ID is required'],
+        unique: true
     },
-    price: {
-        type: Number,
-        required: [true, 'Product price is required'],
-        min: [0, 'Price cannot be negative']
+    department: {
+        type: String,
+        required: [true, 'Employement Position is required'],
+        enum: ['cashier', 'stocker', 'manager', 'clerk', 'security', 'admin']
     },
-    // Add other fields as necessary
+    employment_type: {
+        type: String,
+        required: [true, 'schudule is required'],
+        enum: ['part-time', 'full-time']
+    },
+    date_hired: {
+        type: Date,
+        required: [true, 'Date hired is required']
+    },
+    contact_info: {
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            lowercase: true,
+            trim: true
+        },
+        phone_number: {
+            type: String,
+            required: [true, 'Phone number is required'],
+            trim: true
+        },
+        address: {
+            type: String,
+            required: [true, 'Address is required'],
+            trim: true
+        }
+    }
 }, {
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });
 
-module.exports = productSchema;
+module.exports = employeeSchema;

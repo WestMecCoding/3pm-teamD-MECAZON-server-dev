@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Product name is required'],
@@ -18,4 +18,4 @@ const productSchema = new mongoose.Schema({
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });
 
-module.exports = productSchema;
+module.exports = userSchema;
