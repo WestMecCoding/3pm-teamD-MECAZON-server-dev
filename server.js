@@ -1,15 +1,19 @@
 const express = require("express");
-const { MongoClient, ObjectId } = require("mongodb");
 const mongoose = require('mongoose');
-// const fs = require('fs');
 const cors = require("cors");
-const app = express();
-
 const dotenv = require('dotenv');
-// dotenv.config();
 
+dotenv.config({path: './.env.development'});
+
+const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 app.use(express.json());
+
+// const productSchema = require('./models/Products');
+const userSchema = require('./models/Users');
+const employeeSchema = require('./models/Employees');
 
 const connections = {};
 const models = {};
