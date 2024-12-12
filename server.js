@@ -1,36 +1,39 @@
 const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
-const fs = require('fs');
+const mongoose = require('mongoose');
+// const fs = require('fs');
 const cors = require("cors");
 const app = express();
-const PORT = 3000;
 
-if (fs.existsSync('.env')) {
-  require('dotenv').config();
-}
+const dotenv = require('dotenv');
+// dotenv.config();
 
-// Initialize both database connections
-const serverDB = await connectServerDB();
-const clientDB = await connectClientDB();
-// Create your models using the appropriate connection
-const Users = serverDB.model('User', userSchema);
-const Products = clientDB.model('Product', productSchema);
+const port = process.env.PORT || 3000;
+app.use(express.json());
 
-const uri = process.env.MONGO_URI;
+const connections = {};
+const models = {};
+
+const bankUserSchema = new mongoose.Schema({});
+
+const uri = process.env.MONGO_DEV_SERVER_URI;
 
 const client = new MongoClient(uri);
 const path = require('path');
-const fs = require('fs').promises;
-
-// Middleware
-// app.use(cors());
-app.use(express.json());
 
 //
 async function startServer() {
   try {
     await client.connect();
     console.log("Connected to MongoDB");
+
+    // Initialize both database connections
+    // const serverDB = await connectServerDB();
+    // const clientDB = await connectClientDB();
+
+    // Create your models using the appropriate connection
+    // const Users = serverDB.model('User', userSchema);
+    // const Products = clientDB.model('Product', productSchema);
 
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
@@ -153,9 +156,9 @@ app.get('/company-home/users', (req, res) => {
 // Update User
 
 // Delete User
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
 
 app.get("/find/:database/:employees", async (req, res) => {
 
