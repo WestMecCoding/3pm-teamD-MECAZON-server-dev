@@ -18,22 +18,18 @@ const userSchema = new mongoose.Schema({
     location: {
         country: {
             type: String,
-            required: [true, 'Country is required'],
             trim: true
         },
         city: {
             type: String,
-            required: [true, 'City is required'],
             trim: true
         },
         address: {
             type: String,
-            required: [true, 'Address is required'],
             trim: true
         },
         zip_code: {
             type: Number,
-            required: [true, 'Zip Code is required'],
             trim: true
         },
     },
@@ -46,7 +42,6 @@ const userSchema = new mongoose.Schema({
         },
         phone_number: {
             type: String,
-            required: [true, 'Phone number is required'],
             trim: true
         },
     },
@@ -57,12 +52,10 @@ const userSchema = new mongoose.Schema({
     },
     orders: {
         type: Array,
-        required: [true, 'Orders is required'],
         trim: true
     },
     payment_type: {
         type: String,
-        required: [true, 'Payment Type is required']
     }
 
     // Add other fields as necessary, no clue what to add now. Add Payment (String)(Edit this when we find a better alternative)

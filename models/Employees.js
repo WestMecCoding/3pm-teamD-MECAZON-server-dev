@@ -27,20 +27,17 @@ const employeeSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: [true, 'Employement Position is required'],
     },
     employment_type: {
         type: String,
-        required: [true, 'Employment Type is required'],
         enum: ['part-time', 'full-time']
     },
     date_hired: {
         type: Date,
-        required: [true, 'Date hired is required']
     },
     isAdmin: {
     type: Boolean,
-    required: [true, 'Adminstrator is required']
+    required: [true, 'Adminstrator info is required']
     },
     contact_info: {
         email: {
@@ -56,7 +53,6 @@ const employeeSchema = new mongoose.Schema({
         },
         address: {
             type: String,
-            required: [true, 'Address is required'],
             trim: true
         }
     }
