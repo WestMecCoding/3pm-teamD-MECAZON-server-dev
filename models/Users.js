@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
         required: [true, 'password is required'],
         trim: true
     }
-    // Add other fields as necessary, no clue what to add now.
+
+    // Add other fields as necessary, no clue what to add now. Add Payment (String), Orders (Arr), Location (Rechange)
 }, {
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });
