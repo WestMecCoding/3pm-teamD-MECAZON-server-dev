@@ -1,31 +1,36 @@
 const express = require("express");
-const mongoose = require('mongoose');
 const cors = require("cors");
-const dotenv = require('dotenv');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-dotenv.config({ path: './.env.development' });
+// Load environment variables
+dotenv.config({ path: "./.env.production" });
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // To parse JSON bodies
 
-// const productSchema = require('./models/Products');
+// Import Schemas
+const productSchema = require("./models/Products");
 const userSchema = require('./models/Users');
 const employeeSchema = require('./models/Employees');
 
+// Mapping of database names to their respective URIs
 const uriMap = {
-  ProductsDB: process.env.MONGO_DEV_CLIENT_URI,
-  UsersEmployeesDB: process.env.MONGO_DEV_SERVER_URI,
+  ProductsDB: process.env.MONGO_DEV_CLIENT_URI, // For Products collection
+  // UsersEmployeesDB: process.env.MONGO_DEV_SERVER_URI, // For Users and Employees collections
+  MECAZONDB: process.env.MONGO_DEV_SERVER_URI, // For Users and Employees collections
 };
 
+// Store connections and models
 const connections = {};
 const models = {};
 
-//
+// Function to get or create a connection based on the database name
 const getConnection = async dbName => {
-
   console.log("getConnection called with dbName:", dbName);
 
   if (!uriMap[dbName]) {
@@ -34,19 +39,20 @@ const getConnection = async dbName => {
 
   if (!connections[dbName]) {
     const DB_URI = uriMap[dbName];
-    console.log(`Creating new connection for ${dbName}`);
+    console.log(`Creating new connection for ${dbName}.`);
+
     connections[dbName] = await mongoose.createConnection(DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`New connection created for ${dbName}`);
+
+    console.log(`New connection established for database: ${dbName}`);
   } else {
-    console.log(`Using existing connection for ${dbName}`);
+    console.log(`Reusing existing connection for database: ${dbName}`);
   }
 
   return connections[dbName];
-}
-
+};
 
 // Function to get or create a model based on the database and collection name
 const getModel = async (dbName, collectionName) => {
@@ -65,12 +71,12 @@ const getModel = async (dbName, collectionName) => {
       case "Products":
         schema = productSchema;
         break;
-      // case "Users":
-      //   schema = userSchema;
-      //   break;
-      // case "Employees":
-      //   schema = employeeSchema;
-      //   break;
+      case "Users":
+        schema = userSchema;
+        break;
+      case "Employees":
+        schema = employeeSchema;
+        break;
       default:
         throw new Error(`No schema defined for collection: ${collectionName}`);
     }
@@ -84,15 +90,7 @@ const getModel = async (dbName, collectionName) => {
   return models[modelKey];
 };
 
-
 // Routes
-
-
-
-
-
-
-
 
 // GET route to find documents
 app.get("/find/:database/:collection", async (req, res) => {
@@ -194,6 +192,47 @@ app.put("/update/:database/:collection/:id", async (req, res) => {
   }
 });
 
+// Test connections before starting server
+async function startServer() {
+  try {
+    console.log("Starting server with environment variables:", {
+      MONGO_DEV_CLIENT_URI: process.env.MONGO_DEV_CLIENT_URI ? "Present" : "Missing",
+      MONGO_DEV_SERVER_URI: process.env.MONGO_DEV_SERVER_URI ? "Present" : "Missing",
+      PORT: process.env.PORT || 3000,
+    });
+    console.log("Raw URIs:", {
+      client: process.env.MONGO_DEV_CLIENT_URI,
+      server: process.env.MONGO_DEV_SERVER_URI,
+    });
+
+    // Only test ProductsDB for now since we only have Products schema
+    const testDatabases = ["ProductsDB"];
+    for (const dbName of testDatabases) {
+      const connection = await getConnection(dbName);
+      console.log(`Successfully connected to MongoDB database: ${dbName}`);
+
+      // Only test Products collection
+      const testCollections = ["Products"];
+      for (const collectionName of testCollections) {
+        const Model = await getModel(dbName, collectionName);
+        const count = await Model.estimatedDocumentCount();
+        console.log(
+          `Found approximately ${count} documents in ${collectionName} collection of ${dbName}`
+        );
+      }
+    }
+
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("Error starting server:", err);
+    process.exit(1);
+  }
+}
+startServer();
+
+//
 
 
 
@@ -209,6 +248,31 @@ app.put("/update/:database/:collection/:id", async (req, res) => {
 
 
 
+
+
+
+
+// Routes
+
+app.get("/db/users", (req, res) => {
+  const users = require("./db/users.json");
+  res.json(users);
+});
+
+app.get("/api/users", (req, res) => {
+  const users = require("./db/users.json");
+  res.json(users);
+});
+
+app.get("/db/employees", (req, res) => {
+  const employees = require("./db/employees.json");
+  res.json(employees);
+});
+
+app.get("/api/employees", (req, res) => {
+  const employees = require("./db/employees.json");
+  res.json(employees);
+});
 
 
 //find users endpoint
@@ -286,7 +350,6 @@ app.get('/company-home/users', (req, res) => {
   }
 })
 
-
 app.get("/find/:database/:employees", async (req, res) => {
 
 });
@@ -356,44 +419,3 @@ app.delete("/employee/delete-employee/:email(or id)/", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
-
-// Test connections before starting server
-async function startServer() {
-  try {
-    console.log("Starting server with environment variables:", {
-      MONGO_CLIENT_URI: process.env.MONGO_CLIENT_URI ? "Present" : "Missing",
-      MONGO_SERVER_URI: process.env.MONGO_SERVER_URI ? "Present" : "Missing",
-      PORT: process.env.PORT || 3000,
-    });
-    console.log("Raw URIs:", {
-      client: process.env.MONGO_CLIENT_URI,
-      server: process.env.MONGO_SERVER_URI,
-    });
-
-    // Only test ProductsDB for now since we only have Products schema
-    const testDatabases = ["ProductsDB"];
-    for (const dbName of testDatabases) {
-      const connection = await getConnection(dbName);
-      console.log(`Successfully connected to MongoDB database: ${dbName}`);
-
-      // Only test Products collection
-      const testCollections = ["Products"];
-      for (const collectionName of testCollections) {
-        const Model = await getModel(dbName, collectionName);
-        const count = await Model.estimatedDocumentCount();
-        console.log(
-          `Found approximately ${count} documents in ${collectionName} collection of ${dbName}`
-        );
-      }
-    }
-
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  } catch (err) {
-    console.error("Error starting server:", err);
-    process.exit(1);
-  }
-}
-startServer();
