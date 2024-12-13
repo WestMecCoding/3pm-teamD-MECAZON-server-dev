@@ -21,7 +21,8 @@ const employeeSchema = require('./models/Employees');
 // Mapping of database names to their respective URIs
 const uriMap = {
   ProductsDB: process.env.MONGO_DEV_CLIENT_URI, // For Products collection
-  UsersEmployeesDB: process.env.MONGO_DEV_SERVER_URI, // For Users and Employees collections
+  // UsersEmployeesDB: process.env.MONGO_DEV_SERVER_URI, // For Users and Employees collections
+  MECAZONDB: process.env.MONGO_DEV_SERVER_URI, // For Users and Employees collections
 };
 
 // Store connections and models
@@ -70,12 +71,12 @@ const getModel = async (dbName, collectionName) => {
       case "Products":
         schema = productSchema;
         break;
-      // case "Users":
-      //   schema = userSchema;
-      //   break;
-      // case "Employees":
-      //   schema = employeeSchema;
-      //   break;
+      case "Users":
+        schema = userSchema;
+        break;
+      case "Employees":
+        schema = employeeSchema;
+        break;
       default:
         throw new Error(`No schema defined for collection: ${collectionName}`);
     }
@@ -195,13 +196,13 @@ app.put("/update/:database/:collection/:id", async (req, res) => {
 async function startServer() {
   try {
     console.log("Starting server with environment variables:", {
-      MONGO_CLIENT_URI: process.env.MONGO_CLIENT_URI ? "Present" : "Missing",
-      MONGO_SERVER_URI: process.env.MONGO_SERVER_URI ? "Present" : "Missing",
+      MONGO_DEV_CLIENT_URI: process.env.MONGO_DEV_CLIENT_URI ? "Present" : "Missing",
+      MONGO_DEV_SERVER_URI: process.env.MONGO_DEV_SERVER_URI ? "Present" : "Missing",
       PORT: process.env.PORT || 3000,
     });
     console.log("Raw URIs:", {
-      client: process.env.MONGO_CLIENT_URI,
-      server: process.env.MONGO_SERVER_URI,
+      client: process.env.MONGO_DEV_CLIENT_URI,
+      server: process.env.MONGO_DEV_SERVER_URI,
     });
 
     // Only test ProductsDB for now since we only have Products schema
