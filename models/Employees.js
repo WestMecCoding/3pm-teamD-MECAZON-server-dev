@@ -23,11 +23,10 @@ const employeeSchema = new mongoose.Schema({
     department: {
         type: String,
         required: [true, 'Employement Position is required'],
-        enum: ['cashier', 'stocker', 'manager', 'clerk', 'security', 'admin']
     },
     employment_type: {
         type: String,
-        required: [true, 'Schedule is required'],
+        required: [true, 'Employment Type is required'],
         enum: ['part-time', 'full-time']
     },
     date_hired: {
