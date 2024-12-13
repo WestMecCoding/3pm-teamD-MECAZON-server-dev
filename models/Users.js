@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Payment Type is required']
     }
 
-    // Add other fields as necessary, no clue what to add now. Add Payment (String), Location (Rechange)
+    // Add other fields as necessary, no clue what to add now. Add Payment (String)(Edit this when we find a better alternative)
 }, {
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });
