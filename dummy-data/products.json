@@ -184,7 +184,7 @@
     "item": "Headphones",
     "category": "Electronics",
     "price_in_usd": 49.99,
-    "details": "Over-the-ear headphones, elimnate room noise, provides soft comfortable fit for hours of listening",
+    "details": "Over-the-ear headphones, eliminate room noise, provides soft comfortable fit for hours of listening",
     "product_img": "https://drive.google.com/file/d/15m1jfNaou-CegpurgVET1ABMM9aWbe_a/view?usp=drive_link",
     "colorArr": ["white", "blue", "red", "green"]
   },
@@ -193,7 +193,7 @@
     "item": "Tablet",
     "category": "Electronics",
     "price_in_usd": 819.99,
-    "details": "Samsung Tab S9 Galaxy Tab 11 iinch tablet, WiFi, 128GB, Android, gray",
+    "details": "Samsung Tab S9 Galaxy Tab 11 inch tablet, WiFi, 128GB, Android, gray",
     "product_img": "https://drive.google.com/file/d/1fFJ3jDTAPu6cnUAmlFVKRuSedF5X-Kxg/view?usp=drive_link"
   },
   {
@@ -230,7 +230,7 @@
   },
   {
     "id": 29,
-    "item": "Portabel Gaming System",
+    "item": "Portable Gaming System",
     "category": "Snacks, Games, Gifts",
     "price_in_usd": 26.13,
     "details": "Portable gaming system with 220 games, 2.5 inch color display, pocket size (DGUN-3911), black",
