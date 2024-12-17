@@ -9,14 +9,14 @@ app.use(cors());
 
 // Routes
 
-app.get("/dummy-data/groceries", (req, res) => {
-  const groceries = require("./dummy-data/groceries.json");
-  res.json(groceries);
+app.get("/dummy-data/products", (req, res) => {
+  const products = require("./dummy-data/products.json");
+  res.json(products);
 });
 
-app.get("/api/groceries", (req, res) => {
-  const groceries = require("./db/groceries.json");
-  res.json(groceries);
+app.get("/api/products", (req, res) => {
+  const products = require("./db/products.json");
+  res.json(products);
 });
 
 app.get("/api/employees", (req, res) => {
