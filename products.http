@@ -1,5 +1,7 @@
 # Base URL
 @baseUrl = http://localhost:3000
+@database = MecazonDatabase
+@collection = ProductInventory
 
 ###
 # Test GET /find/:database/:collection
